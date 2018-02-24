@@ -6,7 +6,7 @@ const url = require('url');
 http.createServer(function (req, res) {
 
     const query = url.parse(req.url, true).query;
-   
+
     index(query.code.toUpperCase(), query.time).then((data) => {
         res.write(JSON.stringify(data));
         res.end();

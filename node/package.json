@@ -12,5 +12,8 @@
     "request": "^2.83.0",
     "request-promise": "^4.2.2",
     "sha1": "^1.1.1"
+  },
+  "scripts":{
+    "run": "node server.js"
   }
 }

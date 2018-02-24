@@ -35,6 +35,7 @@ const get = (key) => {
 
 
 const set = (key, value) => {
+    if(cache[key] !=null) throw "weather already set here"
     cache[key] = value;
     fs.appendFile("cache.txt", key + '_' + jsonminify(JSON.stringify(value)) + os.EOL, function (err) {
         if (err) {

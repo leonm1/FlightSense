@@ -11,7 +11,8 @@ const jsonminify = require('jsonminify')
 async function getWeather(lat, lon, processedTime) {
 
     processedTime.add(30, 'minutes').startOf('hour'); // rounds to nearest hour
-    const hash = sha1(lat + processedTime.format() + lon);
+    const hash = sha1(lat + processedTime.format('X') + lon);
+
 
     return new Promise((resolve, reject) => {
         try {
@@ -28,13 +29,23 @@ async function getWeather(lat, lon, processedTime) {
             }
             return request(options).then(data => {
                 console.log('returned from api');
-                cache.set(hash, data);
 
-                resolve(data);
+                aggressivelyCache(data, lat, lon);
+                resolve(data.currently);
             });
         }
     });
 
+}
+
+const aggressivelyCache = (darkSkyRtn, lat, lon) => {
+
+    Array.from(darkSkyRtn.hourly.data).forEach(element => {
+        const hash = sha1(lat + element.time.toString() + lon);
+
+
+        try { cache.set(hash, element) } catch (err) { }
+    });
 }
 
 
