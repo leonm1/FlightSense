@@ -22,7 +22,7 @@ async function getWeather(lat, lon, processedTime) {
         }
         catch (err) {
             const options = {
-                uri: 'https://api.darksky.net/forecast/' + process.env.DARK_SKY_API_KEY + '/' + lat + ',' + lon + ',' + utcTime.format('X'),
+                uri: 'https://api.darksky.net/forecast/' + process.env.DARK_SKY_API_KEY + '/' + lat + ',' + lon + ',' + processedTime.format('X'),
                 json: true
 
             }

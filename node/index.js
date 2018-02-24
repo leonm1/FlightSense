@@ -15,8 +15,9 @@ async function getDateInfo(code, time) {
     const processedTime = processRawTime(time, tz.get('timezone'));
 
 
-    let weather = await forecast(airport.latitude, airport.longitude, processedTime);
-    return { 'time': processedTime.format('X'), 'weather': weather };
+    let weather = await forecast(airport.latitude, airport.longitude, processedTime.time);
+
+    return { 'time': processedTime.time.format('X'), 'weather': weather };
 
 }
 
@@ -24,7 +25,7 @@ const processRawTime = (rawTime, timezone) => {
     const nativeTime = moment.tz(rawTime, timezone);
     const utcTime = nativeTime.tz('Europe/London');
 
-    return utcTime;
+    return {'dst': nativeTime.isDST(), 'time':utcTime};
 }
 
 module.exports = getDateInfo;
