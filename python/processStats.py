@@ -4,6 +4,8 @@ import datetime
 from multiprocessing import Pool
 import uuid
 import time
+import json
+import requests
 
 # Filepaths
 path = os.path.abspath(os.path.dirname(__file__))
@@ -27,7 +29,7 @@ def row_handler(row):
         dest = row['DEST']
 
         # Zero out negative delay values
-        delay = 0 if row["CRS_DEP_TIME"] < 0 else row["CRS_DEP_TIME"]
+        delay = 0 if int(row["CRS_DEP_TIME"]) < 0 else row["CRS_DEP_TIME"]
 
         # Pre-process time
         time_raw = row["CRS_DEP_TIME"]
@@ -43,12 +45,22 @@ def row_handler(row):
         return {'UUID':unique_id, 'UTC_TIME':date_obj, 'CARRIER':row["UNIQUE_CARRIER"], 'ORIGIN':origin, 'DEST':dest, 
             'DEP_DELAY':delay, 'CANCELLED':row['CANCELLED']}
 
+def get_weather_data(iata, time):
+    BASE_URL = "localhost:8080"
+    params = {'code':iata, 'time':str(time)}
+
+    req = requests.get(BASE_URL, params=params)
+
+    return req.json()
+
+
 if __name__ == "__main__":
     for file in os.listdir(path):
         filename = os.path.join(path, file)
 
         with open("output.csv", mode="w+", newline='') as outfile:
-            fieldnames = ["UUID", "UTC_TIME", "CARRIER", "ORIGIN", "DEST", "DEP_DELAY", "CANCELLED", "TEMP", "PRECIP"]
+            fieldnames = ["UUID", "UTC_TIME", "CARRIER", "ORIGIN", "DEST", "DEP_DELAY", "CANCELLED", "DST", "TEMP_ORIGIN", "PRECIP_ORIGIN", 
+            "WIND_SPEED_ORIGIN", "WIND_BEARING_ORIGIN", "WIND_SPEED_DEST", "WIND_BEARING_DEST", "TEMP_DEST", "PRECIP_DEST"]
             writer = csv.DictWriter(outfile, fieldnames)
             writer.writeheader()
 
