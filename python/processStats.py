@@ -3,6 +3,7 @@ import os
 import datetime
 from multiprocessing import Pool
 import uuid
+import time
 
 # Filepaths
 path = os.path.abspath(os.path.dirname(__file__))
@@ -18,24 +19,43 @@ def row_handler(row):
     # since I used dictReader each row is now formatted in a dictionary so you can get 
     # values by the names at the top of the columns, that'll make it much simpler
 
-    # Generate row UUID
-    unique_id = uuid.uuid1()
-
-    # ex: you can just address data by their id's
-    date_obj = datetime.datetime.strptime(row["FL_DATE"], "%m/%d/%Y")
-    crs_time_obj = datetime.datetime.combine(date_obj, datetime.datetime.strptime(row["CRS_DEP_TIME"], "%H%M"))
-
     
+        # Generate row UUID
+        unique_id = uuid.uuid1()
 
+        origin = row['ORIGIN']
+        dest = row['DEST']
+
+        # Zero out negative delay values
+        delay = 0 if row["CRS_DEP_TIME"] < 0 else row["CRS_DEP_TIME"]
+
+        # Pre-process time
+        time_raw = row["CRS_DEP_TIME"]
+        while len(time_raw) < 4:
+            time_raw = "0" + time_raw
+
+        # Create naive date objects 
+        date_obj = datetime.datetime.strptime(row["FL_DATE"] + "\t" + time_raw, "%m/%d/%Y\t%H%M")
+        # FIXME: Localize date_obj
+
+        # FIXME: Grab temperature
+
+        return {'UUID':unique_id, 'UTC_TIME':date_obj, 'CARRIER':row["UNIQUE_CARRIER"], 'ORIGIN':origin, 'DEST':dest, 
+            'DEP_DELAY':delay, 'CANCELLED':row['CANCELLED']}
 
 if __name__ == "__main__":
     for file in os.listdir(path):
         filename = os.path.join(path, file)
 
-        # Open files
-        with open(filename, newline='') as csvfile:
-            reader = csv.DictReader(csvfile)
+        with open("output.csv", mode="w+", newline='') as outfile:
+            fieldnames = ["UUID", "UTC_TIME", "CARRIER", "ORIGIN", "DEST", "DEP_DELAY", "CANCELLED", "TEMP", "PRECIP"]
+            writer = csv.DictWriter(outfile, fieldnames)
+            writer.writeheader()
 
-            pool = Pool(processes=WORKERS)
+            # Open files
+            with open(filename, newline='') as csvfile: 
+                reader = csv.DictReader(csvfile)
 
-            pool.map(row_handler, reader)
+                pool = Pool(processes=WORKERS)
+
+                writer.writerows(pool.map(row_handler, reader))
