@@ -25,7 +25,7 @@ const processRawTime = (rawTime, timezone) => {
     const nativeTime = moment.tz(rawTime, timezone);
     const utcTime = nativeTime.tz('Europe/London');
 
-    return {'dst': nativeTime.isDST(), 'time':utcTime};
+    return { 'dst': nativeTime.isDST(), 'time': utcTime };
 }
 
 module.exports = getDateInfo;
