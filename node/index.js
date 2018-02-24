@@ -12,11 +12,20 @@ async function getDateInfo(code, time) {
     const airport = airportsjs.lookupByIataCode(code);
 
 
-    let weather = await forecast(airport.latitude, airport.longitude,time, tz.get('timzeone'));
-    return { 'tz': tz.utcOffset(), 'weather': weather }
+    const processedTime = processRawTime(time, tz.get('timezone'));
 
+
+    let weather = await forecast(airport.latitude, airport.longitude, processedTime);
+    return { 'time': processedTime.format('X'), 'weather': weather };
 
 }
 
+const processRawTime = (rawTime, timezone) => {
+    const nativeTime = moment.tz(rawTime, timezone);
+    const utcTime = nativeTime.tz('Europe/London');
 
-getDateInfo('ORD', '2014-06-01T12:00:00Z').then(data => console.log(data));
+    return utcTime;
+}
+
+module.exports = getDateInfo;
+//setTimeout(() => { getDateInfo('ORD', '2014-06-01T12:00:00Z').then(data => console.log(data)) }, 1500);

@@ -1,36 +1,42 @@
 
 const sha1 = require('sha1');
-const moment = require('moment-timezone');
+
 const request = require('request-promise');
 const cache = require('./cache.js');
+const jsonminify = require('jsonminify')
 
 
 
-async function getWeather(lat, lon, rawTime, timezone) {
-    const nativeTime = moment.tz(rawTime, timezone);
-    const utcTime = nativeTime.tz('Europe/London');
-    utcTime.add(30, 'minutes').startOf('hour'); // rounds to nearest hour
-    const hash = sha1(lat + utcTime.format() + lon);
+//processedTime is in UTC
+async function getWeather(lat, lon, processedTime) {
 
+    processedTime.add(30, 'minutes').startOf('hour'); // rounds to nearest hour
+    const hash = sha1(lat + processedTime.format() + lon);
 
-    
     return new Promise((resolve, reject) => {
-        cache.get(hash)
-            .then(result => resolve(result))
-            .catch((err) => {
+        try {
+            let rtn = cache.get(hash);
 
-                const url = 'https://api.darksky.net/forecast/' + process.env.DARK_SKY_API_KEY + +'/' + lat + ',' + lon + ',' + utcTime;
+            console.log('returned from cache');
+            resolve(rtn);
+        }
+        catch (err) {
+            const options = {
+                uri: 'https://api.darksky.net/forecast/' + process.env.DARK_SKY_API_KEY + '/' + lat + ',' + lon + ',' + utcTime.format('X'),
+                json: true
 
-                const options = {
-                    uri: url,
-                    json: true
-                }
-                return rp(options).then(result => resolve(result)).catch(err => reject(err));
+            }
+            return request(options).then(data => {
+                console.log('returned from api');
+                cache.set(hash, data);
 
+                resolve(data);
             });
-
-    })
+        }
+    });
 
 }
-;
+
+
+
 module.exports = getWeather;
