@@ -16,43 +16,36 @@ for file in os.listdir(path):
 
         # Process and parse data
         for row in reader:
-            if len(row) == 2 and row[0].startswith("Origin"):
+            if row[0] != "YEAR":
                 # Extract origin airport IATA Code
-                origin = row[1].split("(")[0:2]
-            elif len(row) > 1 and len(row[0]) == 2:
-                airline = row[0]
+                origin = row[10]
+                airline = row[5]
                 timeZone = None
 
-                # Parse date
-                month,day,year = row[1].split('/')
-                # Parse into int
-                year = int(year)
-                day = int(day)
-                month = int(month)
+                # Parse date into int
+                year = int(row[0])
+                day = int(row[2])
+                month = int(row[1])
 
-                if year < 50:
-                    year += 2000
-                elif year < 100:
-                    year += 1900
+                # Process XXXX time to XX:XX time
+                CRSDep = row[13]
+                while len(CRSDep) < 4:
+                    CRSDep = "0" + CRSDep
+                delay = row[15]
 
                 # Parse time from CSV
-                schHour,schMin = row[5].split(':')
+                schHour,schMin = CRSDep.split(':')
                 actHour,actMin = row[6].split(':')
-                wheelsOffHour,wheelsOffMin = row[10].split(':')
-
 
                 # Parse into int
                 schHour = int(schHour)
                 schMin = int(schMin)
-                actHour = int(actHour)
-                actMin = int(actMin)
                 wheelsOffHour = int(wheelsOffHour)
                 wheelsOffMin = int(wheelsOffMin)
 
                 # Parse date and scheduledTime into datetime object
                 scheduledTime = datetime.datetime(year, month, day, schHour, schMin, 0, 0, timeZone).timestamp()
                 actualTime = datetime.datetime(year, month, day, actHour, actMin, 0, 0, timeZone).timestamp()
-                wheelsOffTime = datetime.datetime(year, month, day, wheelsOffHour, wheelsOffMin, 0, 0, timeZone).timestamp()
 
                 predictedElapsed = row[7]
                 actualElapsed = row[8]
@@ -60,7 +53,7 @@ for file in os.listdir(path):
                 # timedelta obj from datetime module
                 totalDelay = actualTime - scheduledTime
 
-                
+
                 delayCarrier = row[12]
                 delayWeather = row[13]
                 delayNAS = row[14]
