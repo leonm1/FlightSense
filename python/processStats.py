@@ -16,7 +16,7 @@ path += '/../data'
 
 
 
-WORKERS = 16
+WORKERS = 8
 
 # Do whatever you need to do with the row data in here
 def row_handler(row):
