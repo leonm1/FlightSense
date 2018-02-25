@@ -1,6 +1,6 @@
 
 const sha1 = require('sha1');
-
+const moment = require('moment-timezone');
 const request = require('request-promise');
 const cache = require('./cache.js');
 const jsonminify = require('jsonminify')
@@ -10,8 +10,9 @@ const jsonminify = require('jsonminify')
 //processedTime is in UTC
 async function getWeather(lat, lon, processedTime) {
 
-    processedTime.add(30, 'minutes').startOf('hour'); // rounds to nearest hour
-    const hash = sha1(lat + processedTime.format('X') + lon);
+    const clonedTime = moment(processedTime);
+    clonedTime.add(30, 'minutes').startOf('hour'); // rounds to nearest hour
+    const hash = sha1(lat + clonedTime.format('X') + lon);
 
 
     return new Promise((resolve, reject) => {
@@ -23,7 +24,7 @@ async function getWeather(lat, lon, processedTime) {
         }
         catch (err) {
             const options = {
-                uri: 'https://api.darksky.net/forecast/' + process.env.DARK_SKY_API_KEY + '/' + lat + ',' + lon + ',' + processedTime.format('X'),
+                uri: 'https://api.darksky.net/forecast/' + process.env.DARK_SKY_API_KEY + '/' + lat + ',' + lon + ',' + clonedTime.format('X'),
                 json: true
 
             }
