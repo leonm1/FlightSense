@@ -1,4 +1,4 @@
-#FlightSense
+# FlightSense
 
 ## Inspiration
 We wanted to know when our flight would be delayed. We decided to use machine learning to make that happen.
