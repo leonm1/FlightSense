@@ -8,17 +8,10 @@ import json
 import requests
 import random
 
-global NUM_ROW
-NUM_ROW = 1
-
 # Filepaths
 path = os.path.abspath(os.path.dirname(__file__))
 # relative path to the data folder
 path += '/../data'
-
-
-
-WORKERS = 3
 
 # Do whatever you need to do with the row data in here
 def row_handler(row):
@@ -127,6 +120,5 @@ if __name__ == "__main__":
             with open(filename, newline='') as csvfile: 
                 reader = csv.DictReader(csvfile)
 
-                pool = Pool(processes=WORKERS)
-
-                writer.writerows(pool.map(row_handler, reader))
+                for row in csvfile:
+                    writer.writerows(row_handler(row))
