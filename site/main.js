@@ -54,7 +54,9 @@ async function getPrice() {
                 opAir = data.opAirline;
                 depTime = data.departTime;
                 ticketPrice = data.price;
-                document.getElementById("amadeus").innerHTML = ticketPrice;
+                document.getElementById("carrier").innerHTML = "Carrier: " + opAir;
+                document.getElementById("time").innerHTML = "Time: " + depTime;
+                document.getElementById("price").innerHTML = "Price: $" + ticketPrice;
               })
         })
     }
