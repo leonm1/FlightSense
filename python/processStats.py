@@ -86,7 +86,7 @@ def get_weather_data(iata, time):
     time = str(time)
     time = time[0:len(time) - 3]
 
-    port = ":8" + random.randint(0, 4)
+    port = ":8" + str(random.randint(0, 4))
 
     BASE_URL = "http://localhost" + port
 
