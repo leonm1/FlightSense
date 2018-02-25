@@ -23,7 +23,7 @@ async function getWeather(lat, lon, processedTime) {
             let rtn = cache.get(hash);
             count.api++;
             log();
-            //  console.log('returned from cache');
+              console.log('returned from cache');
             resolve(rtn);
         }
         catch (err) {
@@ -35,7 +35,7 @@ async function getWeather(lat, lon, processedTime) {
             count.cache++;
             log();
             return request(options).then(data => {
-                //   console.log('returned from api');
+                  console.log('returned from api');
 
                 aggressivelyCache(data, lat, lon);
                 resolve(data.currently);
@@ -58,7 +58,7 @@ const aggressivelyCache = (darkSkyRtn, lat, lon) => {
 }
 
 const log = () => {
-    if ((count.api + count.cache) % 50 === 0) console.log("API:CACHE:TOTAL", count.api, count, cache.count.api + count.cache)
+    if ((count.api + count.cache) % 30 === 0) console.log("API:CACHE:TOTAL", count.api, count, cache.count.api + count.cache)
 }
 
 module.exports = getWeather;
