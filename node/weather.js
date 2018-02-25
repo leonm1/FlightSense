@@ -16,7 +16,7 @@ async function getWeather(iata, lat, lon, processedTime) {
     const clonedTime = moment(processedTime);
     clonedTime.add(30, 'minutes').startOf('hour'); // rounds to nearest hour
     const hash = sha1(iata + clonedTime.format('X'));
-    console.log(hash);
+    //console.log(hash);
 
 
     return new Promise((resolve, reject) => {
@@ -24,7 +24,7 @@ async function getWeather(iata, lat, lon, processedTime) {
             let rtn = cache.get(hash);
             count.api++;
 
-            console.log('returned from cache');
+            //console.log('returned from cache');
             resolve(rtn);
         }
         catch (err) {
@@ -36,7 +36,7 @@ async function getWeather(iata, lat, lon, processedTime) {
             count.cache++;
 
             return request(options).then(data => {
-                console.log('returned from api');
+                //console.log('returned from api');
 
                 aggressivelyCache(data, iata);
                 resolve(data.currently);
