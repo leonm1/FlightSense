@@ -20,6 +20,8 @@ const parseFile = () => {
             }
 
             console.log('ready!');
+            console.log(JSON.stringify(cache));
+            console.log(cache['6a2d012deb02905bad17290f8ad6dd751dba7a74']);
 
 
 

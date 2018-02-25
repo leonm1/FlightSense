@@ -23,7 +23,7 @@ async function getWeather(iata,lat, lon, processedTime) {
         try {
             let rtn = cache.get(hash);
             count.api++;
-            log();
+            
               console.log('returned from cache');
             resolve(rtn);
         }
@@ -34,7 +34,7 @@ async function getWeather(iata,lat, lon, processedTime) {
 
             }
             count.cache++;
-            log();
+            \
             return request(options).then(data => {
                   console.log('returned from api');
 
