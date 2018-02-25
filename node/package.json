@@ -1,0 +1,19 @@
+{
+  "name": "node",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "airport-tz": "^0.1.5",
+    "airportsjs": "^0.2.2",
+    "dotenv": "^5.0.0",
+    "jsonminify": "^0.4.1",
+    "moment-timezone": "^0.5.14",
+    "request": "^2.83.0",
+    "request-promise": "^4.2.2",
+    "sha1": "^1.1.1"
+  },
+  "scripts":{
+    "run": "node server.js"
+  }
+}
