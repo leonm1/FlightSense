@@ -16,7 +16,7 @@ path += '/../data'
 
 
 
-WORKERS = 8
+WORKERS = 20
 
 # Do whatever you need to do with the row data in here
 def row_handler(row):
@@ -25,7 +25,6 @@ def row_handler(row):
         origin = row['ORIGIN']
         dest = row['DEST']
 
-        print(row)
         # Zero out negative delay values
         delay = 0 if int(row["CRS_DEP_TIME"]) < 0 else row["CRS_DEP_TIME"]
 
@@ -51,7 +50,7 @@ def row_handler(row):
             precip_type_orig = "N/A" if weather_origin["weather"]["precipIntensity"] == 0 else weather_origin["weather"]["precipType"]
             precip_type_dest = "N/A" if weather_dest["weather"]["precipIntensity"] == 0 else weather_dest["weather"]["precipType"]
         except:
-            time.sleep(5)
+            time.sleep(3)
             precip_type_orig = "N/A" if weather_origin["weather"]["precipIntensity"] == 0 else weather_origin["weather"]["precipType"]
             precip_type_dest = "N/A" if weather_dest["weather"]["precipIntensity"] == 0 else weather_dest["weather"]["precipType"]
 
@@ -97,7 +96,7 @@ def get_weather_data(iata, time):
 
 if __name__ == "__main__":
     #for file in os.listdir(path):
-        filename = os.path.join(path, "test.csv") #FIXME replace with 'file'
+        filename = os.path.join(path, "255932176_T_ONTIME_JAN_CONCISE.csv") #FIXME replace with 'file'
 
         with open("output.csv", mode="w+", newline='') as outfile:
             fieldnames = ["UTC_TIME", 
