@@ -1,0 +1,51 @@
+body, html{
+    height: 100%;
+    margin:0 
+}
+#map{
+    display: flex;
+    float: left;
+    height: 400px;
+    width: 600px;
+    border-style: solid;
+    border-width: 22px;
+    border-color: black;
+    margin: 9px;
+}
+#inputs{
+    display: inline-block;
+    float: left;
+    height: 300px;
+    width: 280px;
+    border-style: solid;
+    border-width: 22px;
+    border-color: black;
+    margin: 9px;
+    background-color: white;
+    padding-left: 10px;
+
+}
+body{
+    background-image: url(disney.jpg);
+    background-repeat: no-repeat;
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
+input{
+    height: 20px;
+    margin-top: 5px;
+    margin-left: 5px;
+    width: 90%;
+    margin-bottom: 10px;
+    white-space: nowrap;
+    display: block;
+}
+
+h2{
+    margin-bottom: 10px;
+    display: block;
+    clear: both;
+}
+#col{
+    width: 40%;
+}
