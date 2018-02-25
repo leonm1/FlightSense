@@ -120,5 +120,5 @@ if __name__ == "__main__":
             with open(filename, newline='') as csvfile: 
                 reader = csv.DictReader(csvfile)
 
-                for row in csvfile:
+                for row in reader:
                     writer.writerows(row_handler(row))
