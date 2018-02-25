@@ -103,8 +103,8 @@ def get_weather_data(iata, time):
 if __name__ == "__main__":
     #for file in os.listdir(path):
         filename = os.path.join(path, "255932176_T_ONTIME_JAN_CONCISE.csv") #FIXME replace with 'file'
-
-        with open("output.csv", mode="w+", newline='') as outfile:
+        outfilename = os.path.join(path, "255932176_T_ONTIME_JAN_CONCISE.csv" + "~processed")
+        with open(outfilename, mode="w+", newline='') as outfile:
             fieldnames = ["UTC_TIME", 
             "CARRIER", 
             "ORIGIN", 
