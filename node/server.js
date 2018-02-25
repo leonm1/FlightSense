@@ -19,7 +19,7 @@ http.createServer(function (req, res) {
         res.write(JSON.stringify(data));
         res.end();
     }).catch(err => {
-        res.statusMessage = 403;
+        res.statusMessage = 400;
         res.end();
 
     }
