@@ -37,7 +37,7 @@ async function getPrice() {
     let url = "https://lc5ey0wgcj.execute-api.us-east-1.amazonaws.com/dev?orgAirport=ORG&destAirport=DEST&searchDate=DATE";
     url = url.replace("ORG", origin.value);
     url = url.replace("DEST", destination.value);
-    url = url.replace("DATE", date.value.substring(0,10));
+    url = url.replace("DATE", date.value.substr(0,10));
     let opAir = "";
     let depTime = "";
     let ticketPrice = "";
@@ -47,7 +47,7 @@ async function getPrice() {
     
             fetch(url, {
                 method: 'get',
-                mode: 'no-cors'
+               // mode: 'no-cors'
             }).then( results => {
                 return results.json();
               }).then( data => {
