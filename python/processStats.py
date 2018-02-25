@@ -7,7 +7,7 @@ import time
 import json
 import requests
 
-Num_Done = 0
+NUM_ROW = 1
 
 # Filepaths
 path = os.path.abspath(os.path.dirname(__file__))
@@ -16,7 +16,7 @@ path += '/../data'
 
 
 
-WORKERS = 20
+WORKERS = 16
 
 # Do whatever you need to do with the row data in here
 def row_handler(row):
@@ -51,8 +51,8 @@ def row_handler(row):
             precip_type_dest = "N/A" if weather_dest["weather"]["precipIntensity"] == 0 else weather_dest["weather"]["precipType"]
         except:
             time.sleep(3)
-            precip_type_orig = "N/A" if weather_origin["weather"]["precipIntensity"] == 0 else weather_origin["weather"]["precipType"]
-            precip_type_dest = "N/A" if weather_dest["weather"]["precipIntensity"] == 0 else weather_dest["weather"]["precipType"]
+	    precip_type_orig = "N/A" if weather_origin["weather"]["precipIntensity"] == 0 else weather_origin["weather"]["precipType"]
+      	    precip_type_dest = "N/A" if weather_dest["weather"]["precipIntensity"] == 0 else weather_dest["weather"]["precipType"]
 
         # Parse dst
         dst = 1 if weather_origin["processedTime"]["dst"] == "true" else 0
@@ -83,7 +83,13 @@ def row_handler(row):
 def get_weather_data(iata, time):
     time = str(time)
     time = time[0:len(time) - 3]
-    BASE_URL = "http://ec2-34-224-81-253.compute-1.amazonaws.com/"
+
+    global NUM_ROW
+    NUM_ROW += 1
+    port = ":8" + str(NUM_ROW % 5)
+
+    BASE_URL = "http://localhost" + port
+
     params = {'code':iata, 'time':time}
 
     res = requests.get(BASE_URL, params=params)
