@@ -16,6 +16,7 @@ async function getWeather(iata,lat, lon, processedTime) {
     const clonedTime = moment(processedTime);
     clonedTime.add(30, 'minutes').startOf('hour'); // rounds to nearest hour
     const hash = sha1(iata+clonedTime.format('X'));
+    console.log(hash);
 
 
     return new Promise((resolve, reject) => {
