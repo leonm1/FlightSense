@@ -47,15 +47,19 @@ def row_handler(row):
         except:
             print(json.dumps(weather_origin.json(), indent=4) + " " + str(origin) + str(date_obj))
 
-        
-        precip_type_orig = "N/A" if weather_origin["weather"]["precipIntensity"] == 0 else weather_origin["weather"]["precipType"]
-        precip_type_dest = "N/A" if weather_dest["weather"]["precipIntensity"] == 0 else weather_dest["weather"]["precipType"]
+        try:
+            precip_type_orig = "N/A" if weather_origin["weather"]["precipIntensity"] == 0 else weather_origin["weather"]["precipType"]
+            precip_type_dest = "N/A" if weather_dest["weather"]["precipIntensity"] == 0 else weather_dest["weather"]["precipType"]
+        except:
+            time.sleep(5)
+            precip_type_orig = "N/A" if weather_origin["weather"]["precipIntensity"] == 0 else weather_origin["weather"]["precipType"]
+            precip_type_dest = "N/A" if weather_dest["weather"]["precipIntensity"] == 0 else weather_dest["weather"]["precipType"]
 
         # Parse dst
         dst = 1 if weather_origin["processedTime"]["dst"] == "true" else 0
 
-        origin_bearing = "N/A" if weather_origin["weather"]["windSpeed"] == None or weather_origin["weather"]["windSpeed"] == 0 else weather_origin["weather"]["windBearing"]
-        dest_bearing = "N/A" if weather_origin["weather"]["windSpeed"] == None or weather_dest["weather"]["windSpeed"] == 0 else weather_dest["weather"]["windBearing"]
+        #origin_bearing = "N/A" if weather_origin["weather"]["windSpeed"] == None or weather_origin["weather"]["windSpeed"] == 0 else weather_origin["weather"]["windBearing"]
+        #dest_bearing = "N/A" if weather_origin["weather"]["windSpeed"] == None or weather_dest["weather"]["windSpeed"] == 0 else weather_dest["weather"]["windBearing"]
 
 
         return {'UTC_TIME':weather_origin["processedTime"]["time"], 
@@ -68,10 +72,10 @@ def row_handler(row):
             "TEMP_ORIGIN":weather_origin["weather"]["temperature"], 
             "PRECIP_ORIGIN":weather_origin["weather"]["precipIntensity"], 
             "PRECIP_TYPE_ORIGIN":precip_type_orig,
-            "WIND_SPEED_ORIGIN":weather_origin["weather"]["windSpeed"], 
-            "WIND_BEARING_ORIGIN":origin_bearing, 
-            "WIND_SPEED_DEST":weather_dest["weather"]["windSpeed"], 
-            "WIND_BEARING_DEST":weather_dest, 
+            #"WIND_SPEED_ORIGIN":weather_origin["weather"]["windSpeed"], 
+            #"WIND_BEARING_ORIGIN":origin_bearing, 
+            #"WIND_SPEED_DEST":weather_dest["weather"]["windSpeed"], 
+            #"WIND_BEARING_DEST":weather_dest, 
             "TEMP_DEST":weather_dest["weather"]["temperature"], 
             "PRECIP_DEST":weather_dest["weather"]["precipIntensity"],
             "PRECIP_TYPE_DEST":precip_type_dest
@@ -106,10 +110,10 @@ if __name__ == "__main__":
             "TEMP_ORIGIN", 
             "PRECIP_ORIGIN", 
             "PRECIP_TYPE_ORIGIN",
-            "WIND_SPEED_ORIGIN", 
-            "WIND_BEARING_ORIGIN", 
-            "WIND_SPEED_DEST", 
-            "WIND_BEARING_DEST", 
+            #"WIND_SPEED_ORIGIN", 
+            #"WIND_BEARING_ORIGIN", 
+            #"WIND_SPEED_DEST", 
+            #"WIND_BEARING_DEST", 
             "TEMP_DEST", 
             "PRECIP_DEST",
             "PRECIP_TYPE_DEST"]
