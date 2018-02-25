@@ -1,2 +1,4 @@
 .DS_Store
 .vscode/settings.json
+node/flightsense.pem
+node/cache.txt

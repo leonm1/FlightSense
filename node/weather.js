@@ -5,19 +5,24 @@ const request = require('request-promise');
 const cache = require('./cache.js');
 const jsonminify = require('jsonminify')
 
-
+let count = {
+    api: 0,
+    cache: 0
+}
 
 //processedTime is in UTC
-async function getWeather(lat, lon, processedTime) {
+async function getWeather(iata, lat, lon, processedTime) {
 
     const clonedTime = moment(processedTime);
     clonedTime.add(30, 'minutes').startOf('hour'); // rounds to nearest hour
-    const hash = sha1(lat + clonedTime.format('X') + lon);
+    const hash = sha1(iata + clonedTime.format('X'));
+    console.log(hash);
 
 
     return new Promise((resolve, reject) => {
         try {
             let rtn = cache.get(hash);
+            count.api++;
 
             console.log('returned from cache');
             resolve(rtn);
@@ -28,27 +33,34 @@ async function getWeather(lat, lon, processedTime) {
                 json: true
 
             }
+            count.cache++;
+
             return request(options).then(data => {
                 console.log('returned from api');
 
-                aggressivelyCache(data, lat, lon);
+                aggressivelyCache(data, iata);
                 resolve(data.currently);
             });
         }
+
+
     });
 
 }
 
-const aggressivelyCache = (darkSkyRtn, lat, lon) => {
+const aggressivelyCache = (darkSkyRtn, iata) => {
 
     Array.from(darkSkyRtn.hourly.data).forEach(element => {
-        const hash = sha1(lat + element.time.toString() + lon);
-
-
-        try { cache.set(hash, element) } catch (err) { }
+        try { cache.set(hashShit(iata, element.time), element) } catch (err) { }
     });
 }
 
+const log = () => {
+    if ((count.api + count.cache) % 30 === 0) console.log("API:CACHE:TOTAL", count.api, count, cache.count.api + count.cache)
+}
 
+const hashShit = (iata, epochTime) => {
+    return sha1(iata + epochTime);
+}
 
 module.exports = getWeather;

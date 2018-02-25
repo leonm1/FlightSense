@@ -7,27 +7,29 @@ const moment = require('moment-timezone');
 const forecast = require('./weather.js');
 
 
+
+
 async function getDateInfo(code, time) {
     const tz = airport_tz.findWhere({ iata: code });
     const airport = airportsjs.lookupByIataCode(code);
 
 
     const processedTime = processRawTime(time, tz.get('timezone'));
-  
-    
-    let weather = await forecast(airport.latitude, airport.longitude, processedTime.time);
+
+
+    let weather = await forecast(code.toUpperCase(), airport.latitude, airport.longitude, processedTime.time);
 
     processedTime.time = processedTime.time.format('X');
-    
-    return { processedTime, 'weather': weather };
+
+    return { 'processedTime': processedTime, 'weather': weather };
 
 }
 
 const processRawTime = (rawTime, timezone) => {
     const nativeTime = moment.tz(rawTime, timezone);
-   
+
     const utcTime = nativeTime.clone().tz('Etc/UTC');
- 
+
 
     return { 'dst': nativeTime.isDST(), 'time': utcTime };
 }
