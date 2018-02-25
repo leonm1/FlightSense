@@ -51,8 +51,8 @@ def row_handler(row):
             precip_type_dest = "N/A" if weather_dest["weather"]["precipIntensity"] == 0 else weather_dest["weather"]["precipType"]
         except:
             time.sleep(3)
-	    precip_type_orig = "N/A" if weather_origin["weather"]["precipIntensity"] == 0 else weather_origin["weather"]["precipType"]
-      	    precip_type_dest = "N/A" if weather_dest["weather"]["precipIntensity"] == 0 else weather_dest["weather"]["precipType"]
+            precip_type_orig = "N/A" if weather_origin["weather"]["precipIntensity"] == 0 else weather_origin["weather"]["precipType"]
+            precip_type_dest = "N/A" if weather_dest["weather"]["precipIntensity"] == 0 else weather_dest["weather"]["precipType"]
 
         # Parse dst
         dst = 1 if weather_origin["processedTime"]["dst"] == "true" else 0
