@@ -58,7 +58,7 @@ const aggressivelyCache = (darkSkyRtn, lat, lon) => {
 }
 
 const log = () => {
-    if ((count.api + count.cache) % 5000 === 0) console.log("API:CACHE:TOTAL", count.api, count, cache.count.api + count.cache)
+    if ((count.api + count.cache) % 50 === 0) console.log("API:CACHE:TOTAL", count.api, count, cache.count.api + count.cache)
 }
 
 module.exports = getWeather;
