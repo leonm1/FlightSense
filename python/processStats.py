@@ -18,7 +18,7 @@ path += '/../data'
 
 
 
-WORKERS = 10
+WORKERS = 3
 
 # Do whatever you need to do with the row data in here
 def row_handler(row):
@@ -86,9 +86,7 @@ def get_weather_data(iata, time):
     time = str(time)
     time = time[0:len(time) - 3]
 
-    port = ":8" + str(random.randint(0, 4))
-
-    BASE_URL = "http://localhost" + port
+    BASE_URL = "http://localhost"
 
     params = {'code':iata, 'time':time}
 
@@ -101,9 +99,9 @@ def get_weather_data(iata, time):
 
 
 if __name__ == "__main__":
-    #for file in os.listdir(path):
-        filename = os.path.join(path, "255932176_T_ONTIME_JAN_CONCISE.csv") #FIXME replace with 'file'
-        outfilename = os.path.join(path, "255932176_T_ONTIME_JAN_CONCISE.csv" + "~processed")
+    for file in os.listdir(path):
+        filename = os.path.join(path, file) #FIXME replace with 'file'
+        outfilename = file + "~processed"
         with open(outfilename, mode="w+", newline='') as outfile:
             fieldnames = ["UTC_TIME", 
             "CARRIER", 
