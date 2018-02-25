@@ -7,7 +7,7 @@ http.createServer(function (req, res) {
 
 
     const query = url.parse(req.url, true).query;
-    console.log(query);
+  //  console.log(query);
     if (query.code == null || query.time == null || query.code =='' || query.time == '') {
         res.statusMessage = 403;
         res.end();

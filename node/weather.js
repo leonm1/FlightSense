@@ -19,7 +19,7 @@ async function getWeather(lat, lon, processedTime) {
         try {
             let rtn = cache.get(hash);
 
-            console.log('returned from cache');
+          //  console.log('returned from cache');
             resolve(rtn);
         }
         catch (err) {
@@ -29,7 +29,7 @@ async function getWeather(lat, lon, processedTime) {
 
             }
             return request(options).then(data => {
-                console.log('returned from api');
+             //   console.log('returned from api');
 
                 aggressivelyCache(data, lat, lon);
                 resolve(data.currently);

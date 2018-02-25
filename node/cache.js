@@ -19,6 +19,8 @@ const parseFile = () => {
                 cache[pair[0]] = JSON.parse(pair[1]);
             }
 
+            console.log('ready!');
+
 
 
         }
