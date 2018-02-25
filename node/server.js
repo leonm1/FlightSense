@@ -11,6 +11,7 @@ http.createServer(function (req, res) {
     if (query.code == null || query.time == null){
         res.statusMessage = 403;
         res.end();
+        return;
     }
 
     index(query.code.toUpperCase(), query.time).then((data) => {
