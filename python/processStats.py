@@ -37,7 +37,7 @@ def row_handler(row):
             time_raw = "0" + time_raw
 
         # Create naive date objects 
-        date_obj = datetime.datetime.strptime(row["FL_DATE"] + "\t" + time_raw, "%m/%d/%Y\t%H%M")
+        date_obj = datetime.datetime.strptime(row["FL_DATE"] + "\t" + time_raw, "%Y-%m-%d\t%H%M")
         # FIXME: Localize date_obj
 
         # FIXME: Grab temperature
@@ -51,12 +51,12 @@ def get_weather_data(iata, time):
 
     req = requests.get(BASE_URL, params=params)
 
-    return req.json()
+    
 
 
 if __name__ == "__main__":
-    for file in os.listdir(path):
-        filename = os.path.join(path, file)
+    #for file in os.listdir(path):
+        filename = os.path.join(path, "42238442_T_ONTIME_JAN_CONCISE.csv") #FIXME replace with 'file'
 
         with open("output.csv", mode="w+", newline='') as outfile:
             fieldnames = ["UUID", "UTC_TIME", "CARRIER", "ORIGIN", "DEST", "DEP_DELAY", "CANCELLED", "DST", "TEMP_ORIGIN", "PRECIP_ORIGIN", 
