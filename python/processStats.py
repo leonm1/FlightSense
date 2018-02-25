@@ -6,7 +6,9 @@ import uuid
 import time
 import json
 import requests
+import random
 
+global NUM_ROW
 NUM_ROW = 1
 
 # Filepaths
@@ -16,7 +18,7 @@ path += '/../data'
 
 
 
-WORKERS = 8
+WORKERS = 16
 
 # Do whatever you need to do with the row data in here
 def row_handler(row):
@@ -84,9 +86,7 @@ def get_weather_data(iata, time):
     time = str(time)
     time = time[0:len(time) - 3]
 
-    global NUM_ROW
-    NUM_ROW += 1
-    port = ":8" + str(NUM_ROW % 5)
+    port = ":8" + random.randint(0, 4)
 
     BASE_URL = "http://localhost" + port
 
